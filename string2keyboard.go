@@ -13,7 +13,7 @@ type keySet struct {
 }
 
 //KeyboardWrite emulate keyboard input from string
-func KeyboardWrite(textInput string) error {
+func KeyboardWrite(textInput string, fCtrl bool, fAlt bool) error {
 	kb, err := keybd_event.NewKeyBonding()
 	if err != nil {
 		return err
@@ -21,6 +21,18 @@ func KeyboardWrite(textInput string) error {
 	// For linux, it is very important wait 2 seconds
 	if runtime.GOOS == "linux" {
 		time.Sleep(2 * time.Second)
+	}
+
+	if fCtrl == true {
+		kb.HasCTRL(true)
+	} else {
+		kb.HasCTRL(false)
+	}
+
+	if fAlt == true {
+		kb.HasALT(true)
+	} else {
+		kb.HasALT(false)
 	}
 
 	//Should we skip next character in string
